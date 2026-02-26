@@ -57,7 +57,8 @@ class ApiService {
         queryParameters: queryParams,
         options: Options(headers: _authHeaders),
       );
-      final List<dynamic> data = response.data as List<dynamic>;
+      final responseData = response.data as Map<String, dynamic>;
+      final List<dynamic> data = responseData['todos'] as List<dynamic>;
       return data.map((json) => Todo.fromJson(json as Map<String, dynamic>)).toList();
     } on DioException catch (e) {
       throw _handleError(e);
@@ -85,7 +86,10 @@ class ApiService {
         },
         options: Options(headers: _authHeaders),
       );
-      return Todo.fromJson(response.data as Map<String, dynamic>);
+      // 处理新的API响应格式 {success: true, todo: {...}}
+      final responseData = response.data as Map<String, dynamic>;
+      final todoData = responseData['todo'] ?? responseData;
+      return Todo.fromJson(todoData as Map<String, dynamic>);
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -97,7 +101,10 @@ class ApiService {
         '/api/todos/$id',
         options: Options(headers: _authHeaders),
       );
-      return Todo.fromJson(response.data as Map<String, dynamic>);
+      // 处理新的API响应格式 {success: true, todo: {...}}
+      final responseData = response.data as Map<String, dynamic>;
+      final todoData = responseData['todo'] ?? responseData;
+      return Todo.fromJson(todoData as Map<String, dynamic>);
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -110,7 +117,10 @@ class ApiService {
         data: data,
         options: Options(headers: _authHeaders),
       );
-      return Todo.fromJson(response.data as Map<String, dynamic>);
+      // 处理新的API响应格式 {success: true, todo: {...}}
+      final responseData = response.data as Map<String, dynamic>;
+      final todoData = responseData['todo'] ?? responseData;
+      return Todo.fromJson(todoData as Map<String, dynamic>);
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -133,7 +143,10 @@ class ApiService {
         '/api/todos/$id/toggle',
         options: Options(headers: _authHeaders),
       );
-      return Todo.fromJson(response.data as Map<String, dynamic>);
+      // 处理新的API响应格式 {success: true, todo: {...}}
+      final responseData = response.data as Map<String, dynamic>;
+      final todoData = responseData['todo'] ?? responseData;
+      return Todo.fromJson(todoData as Map<String, dynamic>);
     } on DioException catch (e) {
       throw _handleError(e);
     }

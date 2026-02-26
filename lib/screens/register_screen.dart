@@ -184,7 +184,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 24),
 
               // 注册按钮
-              FilledButton(
+              ElevatedButton(
                 onPressed: _isLoading ? null : _register,
                 child: _isLoading
                     ? const SizedBox(

@@ -4,6 +4,7 @@ import 'config/theme.dart';
 import 'services/api_service.dart';
 import 'services/auth_service.dart';
 import 'services/storage_service.dart';
+import 'services/widget_service.dart';
 import 'providers/todo_provider.dart';
 import 'providers/settings_provider.dart';
 import 'providers/auth_provider.dart';
@@ -11,6 +12,9 @@ import 'screens/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // 初始化小组件服务
+  await WidgetService.initWidget();
 
   // Initialize services
   final storageService = StorageService();
@@ -29,7 +33,7 @@ void main() async {
           create: (_) => TodoProvider(
             apiService: apiService,
             storageService: storageService,
-          )..setToken(null), // 初始无token
+          ), // token会在AuthSyncWrapper中同步
         ),
         ChangeNotifierProvider(
           create: (_) => AuthProvider(
@@ -58,19 +62,21 @@ class _AuthSyncWrapperState extends State<AuthSyncWrapper> {
     // 监听认证状态变化
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _syncToken();
-      context.read<AuthProvider>().addListener(_syncToken);
+      final authProvider = context.read<AuthProvider>();
+      authProvider.addListener(_syncToken);
     });
   }
 
   void _syncToken() {
     final authProvider = context.read<AuthProvider>();
     final todoProvider = context.read<TodoProvider>();
+    // 每次token变化时同步
     todoProvider.setToken(authProvider.token);
   }
 
   @override
   void dispose() {
-    context.read<AuthProvider>().removeListener(_syncToken);
+    // 注意：这里不直接在dispose中removeListener，因为context可能已经无效
     super.dispose();
   }
 

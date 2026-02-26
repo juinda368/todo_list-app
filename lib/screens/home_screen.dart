@@ -22,6 +22,11 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      // 确保auth provider加载完成后再加载todos
+      final authProvider = context.read<AuthProvider>();
+      // 先同步token
+      context.read<TodoProvider>().setToken(authProvider.token);
+      // 然后加载待办
       context.read<TodoProvider>().loadTodos();
     });
   }
@@ -110,11 +115,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: (todo) => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => DetailScreen(todoId: todo.id),
+                      builder: (_) => DetailScreen(todoId: todo.id!),
                     ),
                   ),
-                  onComplete: (todo) => provider.toggleTodo(todo.id),
-                  onDelete: (todo) => provider.deleteTodo(todo.id),
+                  onComplete: (todo) => provider.toggleTodo(todo.id!),
+                  onDelete: (todo) => provider.deleteTodo(todo.id!),
                 ),
               ),
             ],

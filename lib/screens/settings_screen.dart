@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:home_widget/home_widget.dart';
 import '../providers/settings_provider.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -120,15 +122,47 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  void _addWidget() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          '请在手机桌面长按空白区域，选择"小部件"，找到"待办事项"并添加',
-        ),
-        duration: Duration(seconds: 4),
-      ),
-    );
+  void _addWidget() async {
+    if (Platform.isAndroid) {
+      try {
+        // 提示用户手动添加小组件
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                '请在手机桌面长按空白区域，选择"小部件"，找到"待办事项"并添加',
+              ),
+              duration: Duration(seconds: 4),
+            ),
+          );
+        }
+      } catch (e) {
+        // 如果失败，显示引导信息
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text(
+                '请手动添加桌面小组件：设置 > 桌面 > 小部件 > 待办事项',
+              ),
+              duration: const Duration(seconds: 4),
+              action: SnackBarAction(
+                label: '知道了',
+                onPressed: () {},
+              ),
+            ),
+          );
+        }
+      }
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('桌面小组件仅支持Android系统'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    }
   }
 
   void _showAboutDialog() {
