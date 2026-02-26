@@ -83,7 +83,7 @@ class DetailScreen extends StatelessWidget {
                   ),
                 ),
                 ElevatedButton.icon(
-                  onPressed: () => provider.toggleTodo(todo.id),
+                  onPressed: () => provider.toggleTodo(todo.id!),
                   icon: Icon(todo.completed ? Icons.undo : Icons.check),
                   label: Text(todo.completed ? '撤销' : '完成'),
                 ),
@@ -298,7 +298,7 @@ class DetailScreen extends StatelessWidget {
           TextButton(
             onPressed: () async {
               Navigator.pop(context);
-              final success = await provider.deleteTodo(todo.id);
+              final success = await provider.deleteTodo(todo.id!);
               if (success) {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -310,7 +310,7 @@ class DetailScreen extends StatelessWidget {
                 );
               }
             },
-            style: TextButton.styleFrom(primary: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
             child: const Text('删除'),
           ),
         ],

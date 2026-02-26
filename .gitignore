@@ -25,12 +25,19 @@ migrate_working_dir/
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
+.dart_tool/flutter_build/
 .flutter-plugins
 .flutter-plugins-dependencies
 .packages
 .pub-cache/
 .pub/
 /build/
+
+# Android
+android/local.properties
+android/.gradle/
+android/app/*.jks
+android/app/*.keystore
 
 # Web related
 lib/generated_plugin_registrant.dart
@@ -59,3 +66,7 @@ target/
 # Localization
 *.arb.json
 !</lib/l10n/app_en.arb'
+
+# Keystore (do not commit release keys)
+*.jks
+*.keystore

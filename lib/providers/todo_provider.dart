@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import '../models/todo.dart';
 import '../services/api_service.dart';
 import '../services/storage_service.dart';
+import '../services/widget_service.dart';
 
 enum TodoFilter { all, active, completed }
 
@@ -216,6 +217,8 @@ class TodoProvider extends ChangeNotifier {
       _todos.insert(0, todo);
       await _storageService.cacheTodo(todo);
       notifyListeners();
+      // 更新桌面小组件
+      WidgetService.updateWidget();
       return true;
     } catch (e) {
       _error = e.toString();
@@ -232,6 +235,8 @@ class TodoProvider extends ChangeNotifier {
         _todos[index] = updatedTodo;
         await _storageService.cacheTodo(updatedTodo);
         notifyListeners();
+        // 更新桌面小组件
+        WidgetService.updateWidget();
       }
       return true;
     } catch (e) {
@@ -247,6 +252,8 @@ class TodoProvider extends ChangeNotifier {
       _todos.removeWhere((t) => t.id == id);
       await _storageService.deleteCachedTodo(id);
       notifyListeners();
+      // 更新桌面小组件
+      WidgetService.updateWidget();
       return true;
     } catch (e) {
       _error = e.toString();
@@ -263,6 +270,8 @@ class TodoProvider extends ChangeNotifier {
         _todos[index] = updatedTodo;
         await _storageService.cacheTodo(updatedTodo);
         notifyListeners();
+        // 更新桌面小组件
+        WidgetService.updateWidget();
       }
       return true;
     } catch (e) {

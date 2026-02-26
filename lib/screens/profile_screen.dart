@@ -106,7 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onPressed: () => Navigator.pop(context, false),
             child: const Text('取消'),
           ),
-          FilledButton(
+          ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             child: const Text('退出'),
           ),
@@ -219,7 +219,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // 保存按钮
             SizedBox(
               width: double.infinity,
-              child: FilledButton(
+              child: ElevatedButton(
                 onPressed: _isLoading ? null : _saveProfile,
                 child: _isLoading
                     ? const SizedBox(
